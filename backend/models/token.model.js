@@ -15,7 +15,7 @@ const tokenSchema = mongoose.Schema({
     type: {
         type: String,
         enum: [tokenTypes.ACCESS, tokenTypes.REFRESH],
-        requiresd: true,
+        required: true,
     },
     expires: {
         type: Date,

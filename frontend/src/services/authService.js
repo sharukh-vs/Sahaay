@@ -2,7 +2,7 @@ import axiosInstance from "../axios/axiosInstance"
 
 export const register = async ({ email, username , password }) => {
     try {
-        const response = await axiosInstance.post('/auth/register', {email, username, password})
+        const response = await axiosInstance.post('/auth/signup', {email, name:username, password})
         if(response.status !== 201) {
             console.log(response);
             throw new Error(`${response.data.msg}`)

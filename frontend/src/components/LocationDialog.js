@@ -81,6 +81,7 @@ export default function LocationDialog({ isOpen, onClose, onSelectLocation }) {
             );
             const data = await response.json();
             if (data && data.display_name) {
+              console.log(data.display_name);
               handleSelect(data.display_name.split(',')[0]);
             } else {
               alert("Could not find your location");
@@ -95,6 +96,11 @@ export default function LocationDialog({ isOpen, onClose, onSelectLocation }) {
         (error) => {
           console.error("Error detecting location:", error)
           alert("Unable to detect location. Please allow location access.")
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
         }
       )
     } else {
