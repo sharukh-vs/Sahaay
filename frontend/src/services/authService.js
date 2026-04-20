@@ -1,32 +1,33 @@
-import axiosInstance from "../axios/axiosInstance"
+import axiosInstance from '../axios/axiosInstance';
 
-export const register = async ({ email, username , password }) => {
-    try {
-        const response = await axiosInstance.post('/auth/signup', {email, name:username, password})
-        if(response.status !== 201) {
-            console.log(response);
-            throw new Error(`${response.data.msg}`)
-        }
-        return "Registered Successfully";
-    } catch(error) {
-        console.error(error);
-        return error.response.data.msg;
-    }
-}
+/**
+ * Direct API calls for auth (outside of AuthContext).
+ * AuthContext handles session state; these are for one-off API calls.
+ */
 
-export const login = async ({ email, password }) => {
-    try {
-        const response = await axiosInstance.post('/auth/login', {email, password});
-        if(response.status !== 200) {
-            throw new Error(`${response.data.msg}`)
-        }
-        localStorage.setItem("authToken", response.data.token);
-        console.log(localStorage.getItem("authToken"))
-        return response;
-    } catch(e) {
-        if(e.response && e.response.data && e.response.data.msg) {
-            return {error: e.response.data.msg};
-        }
-        return {error: e.message};
-    }
-}
+export const login = (credentials) =>
+    axiosInstance.post('/auth/login', credentials);
+
+export const register = (data) =>
+    axiosInstance.post('/auth/signup', data);
+
+export const logout = (refreshToken) =>
+    axiosInstance.post('/auth/logout', { refreshToken });
+
+export const refreshToken = (refreshToken) =>
+    axiosInstance.post('/auth/refresh-token', { refreshToken });
+
+export const forgotPassword = (email) =>
+    axiosInstance.post('/auth/forgot-password', { email });
+
+export const resetPassword = (token, password) =>
+    axiosInstance.post('/auth/reset-password', { token, password });
+
+export const verifyEmail = (token) =>
+    axiosInstance.post('/auth/verify-email', { token });
+
+export const resendVerification = (email) =>
+    axiosInstance.post('/auth/resend-verification', { email });
+
+export const getMe = () =>
+    axiosInstance.get('/auth/me');
